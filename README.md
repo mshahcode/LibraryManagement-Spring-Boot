@@ -1,4 +1,4 @@
-# CardZone - Cashback Management System
+# Library Management System
 
 - Build the app with
   - for MacOS / Linux `./gradlew clean build`
