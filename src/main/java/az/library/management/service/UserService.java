@@ -1,5 +1,6 @@
 package az.library.management.service;
 
+import az.library.management.dao.entity.Role;
 import az.library.management.dao.entity.User;
 import az.library.management.dao.repository.UserRepository;
 import az.library.management.mapper.UserMapper;
@@ -29,8 +30,9 @@ public class UserService {
         return UserMapper.INSTANCE.mapUserToUserDto(user);
     }
 
-    public UserDTO addUser(NewUserDTO newUserDTO) {
+    public UserDTO addUser(NewUserDTO newUserDTO, Role role) {
         User user = UserMapper.INSTANCE.mapNewUserToUser(newUserDTO);
+        user.setRole(role);
         userRepository.save(user);
         return UserMapper.INSTANCE.mapUserToUserDto(user);
     }

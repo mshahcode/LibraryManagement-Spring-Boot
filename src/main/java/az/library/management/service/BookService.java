@@ -29,9 +29,11 @@ public class BookService {
     }
 
     public BookDTO getBookById(Long book_id) throws NoBookFoundException {
-        Book book = bookRepository.findById(book_id).
+        if(book_id == null){
+            return null;
+        }
+        return bookRepository.findById(book_id).map(BookMapper.INSTANCE::mapBookToBookDto).
                 orElseThrow(() -> new NoBookFoundException("No book exists with id: " + book_id));
-        return BookMapper.INSTANCE.mapBookToBookDto(book);
     }
 
     public BookDTO updateBook(Long book_id, UpdateBookDTO updateBookDTO) throws NoBookFoundException {
