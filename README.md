@@ -1,7 +1,7 @@
 # Library Management System
 
 * Library management in Spring Boot with possibility to order several books  
-* return books, calculate total price in transcation as well as getting cashbach using Get Method Request to other remote API using RestTemplate
+* Returning books, calculating total price in transcation as well as getting the cashback using Get Method Request to other remote API using RestTemplate
 
   
 - Build the app with
