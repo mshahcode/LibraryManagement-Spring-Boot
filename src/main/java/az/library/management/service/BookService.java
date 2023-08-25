@@ -20,16 +20,15 @@ public class BookService {
 
     public BookDTO addNewBook(NewBookDTO newBookDTO) {
         Book book = BookMapper.INSTANCE.mapNewBookDtoToBook(newBookDTO);
-        bookRepository.save(book);
-        return BookMapper.INSTANCE.mapBookToBookDto(book);
+        return BookMapper.INSTANCE.mapBookToBookDto(bookRepository.save(book));
     }
 
-    public Page<BookDTO> getBooks(Pageable pageable){
+    public Page<BookDTO> getBooks(Pageable pageable) {
         return bookRepository.findAll(pageable).map(BookMapper.INSTANCE::mapBookToBookDto);
     }
 
     public BookDTO getBookById(Long book_id) throws NoBookFoundException {
-        if(book_id == null){
+        if (book_id == null) {
             return null;
         }
         return bookRepository.findById(book_id).map(BookMapper.INSTANCE::mapBookToBookDto).
@@ -50,17 +49,17 @@ public class BookService {
         if (book.getTransactions() == null || book.getTransactions().isEmpty()) { // if books don't have reserved books
             bookRepository.deleteById(book_id);
         } else {
-            boolean allBooksReturned = book.getTransactions().stream().anyMatch(transaction -> transaction.getReturnTime() == null);
-            if (allBooksReturned) {
+            boolean NotAllBooksReturned = book.getTransactions().stream().anyMatch(transaction -> transaction.getReturnTime() == null);
+            if (NotAllBooksReturned) {
+                throw new BooksNotReturnedException("Book with id: " + book_id + " can't be deleted without returning all books!");
+            } else {
                 book.setTransactions(null);
                 bookRepository.deleteById(book_id);
-            } else {
-                throw new BooksNotReturnedException("Book with id: " + book_id + " can't be deleted without returning all books!");
             }
         }
     }
 
-	public Page<BookDTO> getAvailableBooks(Pageable pageable){
-		return bookRepository.getAvailableBooks(pageable).map(BookMapper.INSTANCE::mapBookToBookDto);
+    public Page<BookDTO> getAvailableBooks(Pageable pageable) {
+        return bookRepository.getAvailableBooks(pageable).map(BookMapper.INSTANCE::mapBookToBookDto);
     }
 }

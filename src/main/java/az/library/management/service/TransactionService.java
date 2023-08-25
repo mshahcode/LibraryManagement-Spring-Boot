@@ -54,6 +54,7 @@ public class TransactionService {
             transaction.setBorrow_time(LocalDateTime.now());
             transaction.setBook(book);
             transaction.setUser(user);
+
             TransactionDTO transactionDTO = TransactionMapper.INSTANCE
                     .mapTransactionToTransactionDto(transactionRepository.save(transaction));
             transactionDTO.setUser_id(user_id);
@@ -74,9 +75,13 @@ public class TransactionService {
 
         var finalAmount = 0.0;
         paymentTransaction.setFinalAmount(finalAmount);
+
         for (var book_id : booksReturnRequestDTO.getBook_ids()) {
             Book book = bookRepository.findById(book_id).
                     orElseThrow(() -> new NoBookFoundException("No book exists with id: " + book_id));
+            book.setAvailableCopies(book.getAvailableCopies()+1);
+            bookRepository.save(book);
+
             var transactions = transactionRepository.findByUserAndBookAndReturnTimeIsNull(user, book);
 
             if (transactions.isEmpty()) {

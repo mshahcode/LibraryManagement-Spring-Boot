@@ -26,13 +26,13 @@ public class UserController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     UserDTO addUser(@RequestBody @Valid NewUserDTO newUserDTO) {
-        return userService.addUser(newUserDTO, Role.ROLE_USER);
+        return userService.registerUser(newUserDTO, Role.ROLE_USER);
     }
 
     @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
     UserDTO addAdmin(@RequestBody @Valid NewUserDTO newUserDTO) {
-        return userService.addUser(newUserDTO,Role.ROLE_ADMIN);
+        return userService.registerUser(newUserDTO,Role.ROLE_ADMIN);
     }
 
     @GetMapping()

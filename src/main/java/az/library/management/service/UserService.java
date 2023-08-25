@@ -9,9 +9,12 @@ import az.library.management.model.dto.user.UserDTO;
 import az.library.management.model.exception.BooksNotReturnedException;
 import az.library.management.model.exception.NoUserFoundException;
 import az.library.management.model.dto.user.UpdateUserDTO;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     public Page<UserDTO> getUsers(Pageable pageable) {
         return userRepository.findAll(pageable).map(UserMapper.INSTANCE::mapUserToUserDto);
@@ -30,8 +35,11 @@ public class UserService {
         return UserMapper.INSTANCE.mapUserToUserDto(user);
     }
 
-    public UserDTO addUser(NewUserDTO newUserDTO, Role role) {
-        User user = UserMapper.INSTANCE.mapNewUserToUser(newUserDTO);
+    public UserDTO registerUser(NewUserDTO newUserDTO, Role role) {
+        User user = new User();
+        user.setName(newUserDTO.getName());
+        user.setEmail(newUserDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
         user.setRole(role);
         userRepository.save(user);
         return UserMapper.INSTANCE.mapUserToUserDto(user);
