@@ -5,7 +5,11 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class CashbackClient {
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+
+    public CashbackClient(RestTemplate restTemplate){
+        this.restTemplate = restTemplate;
+    }
 
     public Double getCashBack(Double transactionAmount){
         String url = "https://cardzone-cashback-api-c2f5b8105e2b.herokuapp.com/api/cashback?transactionAmount={transactionAmount}"

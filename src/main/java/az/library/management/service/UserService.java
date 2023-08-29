@@ -9,11 +9,9 @@ import az.library.management.model.dto.user.UserDTO;
 import az.library.management.model.exception.BooksNotReturnedException;
 import az.library.management.model.exception.NoUserFoundException;
 import az.library.management.model.dto.user.UpdateUserDTO;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

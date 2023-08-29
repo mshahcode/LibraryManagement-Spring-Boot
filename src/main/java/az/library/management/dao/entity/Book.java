@@ -18,6 +18,7 @@ import java.util.List;
 @Getter
 @Setter
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
+@EntityListeners(Book_Log.class)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,4 +42,12 @@ public class Book {
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Transaction> transactions;
+
+    @Transient
+    private String bookInfo;
+
+    @PostLoad
+    public void setBookInfo(){
+        bookInfo = author + " " + title;
+    }
 }

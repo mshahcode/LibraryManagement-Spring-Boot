@@ -44,4 +44,9 @@
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "book_id")
         private Book book;
+
+        @PrePersist
+        public void setReturnTime() {
+            this.returnTime = LocalDateTime.now();
+        }
     }

@@ -1,4 +1,4 @@
-package az.library.management.config.security;
+package az.library.management.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

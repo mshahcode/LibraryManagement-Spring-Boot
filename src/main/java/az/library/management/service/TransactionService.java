@@ -22,6 +22,7 @@ import az.library.management.model.exception.NoBookFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,22 +37,25 @@ public class TransactionService {
     private final PaymentTransactionRepository paymentTransactionRepository;
     private final CashbackClient cashbackClient;
 
+    @Transactional(rollbackOn = {NoBookFoundException.class, BookUnavailableException.class})
     public List<TransactionDTO> borrowBookTransaction(Long user_id, BooksBorrowRequestDTO borrowRequestDTO) throws NoUserFoundException, NoBookFoundException, BookUnavailableException {
         User user = userRepository.findById(user_id).
                 orElseThrow(() -> new NoUserFoundException("No user exists with id: " + user_id));
         List<TransactionDTO> transactionDTOList = new ArrayList<>();
+        LocalDateTime todayDate = LocalDateTime.now();
+
         for (Long book_id : borrowRequestDTO.getBook_ids()) {
             Book book = bookRepository.findById(book_id).
                     orElseThrow(() -> new NoBookFoundException("No book exists with id: " + book_id));
             if (book.getAvailableCopies() <= 0)
-                throw new BookUnavailableException("Chosen book is unavailable anymore!");
+                throw new BookUnavailableException("Chosen book with id: " + book_id +  " is unavailable anymore!");
 
             book.setAvailableCopies(book.getAvailableCopies() - 1);
             book = bookRepository.save(book);
 
             Transaction transaction = new Transaction();
             transaction.setFine_amount(0.0);
-            transaction.setBorrow_time(LocalDateTime.now());
+            transaction.setBorrow_time(todayDate);
             transaction.setBook(book);
             transaction.setUser(user);
 
