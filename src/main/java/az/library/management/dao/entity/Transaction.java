@@ -1,16 +1,14 @@
     package az.library.management.dao.entity;
 
     import com.fasterxml.jackson.annotation.JsonFormat;
-    import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-    import com.fasterxml.jackson.annotation.ObjectIdGenerators;
     import lombok.AllArgsConstructor;
     import lombok.Getter;
     import lombok.NoArgsConstructor;
     import lombok.Setter;
     import org.springframework.format.annotation.DateTimeFormat;
-    import javax.persistence.*;
-    import javax.validation.constraints.DecimalMin;
-    import javax.validation.constraints.NotNull;
+    import jakarta.persistence.*;
+    import jakarta.validation.constraints.DecimalMin;
+    import jakarta.validation.constraints.NotNull;
     import java.time.LocalDateTime;
 
     @Entity
@@ -19,7 +17,6 @@
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class)
     public class Transaction {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,8 +42,4 @@
         @JoinColumn(name = "book_id")
         private Book book;
 
-        @PrePersist
-        public void setReturnTime() {
-            this.returnTime = LocalDateTime.now();
-        }
     }

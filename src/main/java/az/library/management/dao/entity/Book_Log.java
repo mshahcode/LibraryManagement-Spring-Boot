@@ -3,8 +3,9 @@ package az.library.management.dao.entity;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.http.ResponseEntity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 public class Book_Log {
     private static final Log log = LogFactory.getLog(Book_Log.class);

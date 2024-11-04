@@ -57,12 +57,12 @@ public class UserService {
         if (user.getTransactions() == null || user.getTransactions().isEmpty()) { // if user dont have reserved books
             userRepository.deleteById(user_id);
         } else {
-            boolean allBooksReturned = user.getTransactions().stream().anyMatch(transaction -> transaction.getReturnTime() == null);
-            if (allBooksReturned) {
+            boolean notAllBooksReturned = user.getTransactions().stream().anyMatch(transaction -> transaction.getReturnTime() == null);
+            if (notAllBooksReturned) {
+                throw new BooksNotReturnedException("User with id: " + user_id + " can't be deleted without returning all books!");
+            } else {
                 user.setTransactions(null);
                 userRepository.deleteById(user_id);
-            } else {
-                throw new BooksNotReturnedException("User with id: " + user_id + " can't be deleted without returning all books!");
             }
         }
     }

@@ -2,8 +2,8 @@ package az.library.management.model.dto.user;
 
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 public class UpdateUserDTO {

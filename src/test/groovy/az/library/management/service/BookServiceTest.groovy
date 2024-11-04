@@ -121,7 +121,7 @@ class BookServiceTest extends Specification {
         notThrown(NoBookFoundException)
         with(resultBook) {
             id == 1L
-            author == "Mika"
+            author == "Mikayil"
         }
     }
 

@@ -12,13 +12,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
 
     private final UserService userService;
@@ -36,19 +38,16 @@ public class UserController {
     }
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
     Page<UserDTO> getUsers(Pageable pageable) {
         return userService.getUsers(pageable);
     }
 
     @GetMapping("/{user_id}")
-    @ResponseStatus(HttpStatus.OK)
     UserDTO getUserById(@PathVariable Long user_id) throws NoUserFoundException {
         return userService.getUserById(user_id);
     }
 
     @PutMapping("/{user_id}")
-    @ResponseStatus(HttpStatus.OK)
     UserDTO updateUser(@PathVariable Long user_id, @RequestBody @Valid UpdateUserDTO updateUserDTO) throws NoUserFoundException {
         return userService.updateUser(user_id, updateUserDTO);
     }
